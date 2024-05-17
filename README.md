@@ -92,34 +92,41 @@ The first term in this equation (Slider+(1-Slider)S) linearly interpolates betwe
 offset  is important as if a video was just posted t=0 would be undefined, and if 0<t1, log would blow up to a very large negative number. ζ is important as if log(offset+t) is close to zero, Slider/(log(offset+t)/log(10)) would blow up to infinity, meaning the actual score would be meaningless for just posted videos.
 
 ![Single_adjustment](images/single_adj.png)
-Figure X: S=0.6, t=4, toffset=1, ζ=1: Example of score changes for the slider changing from 0 to 1. First term is blue, the second is red, and the product is purple. 
+
+Figure 1: S=0.6, t=4, toffset=1, ζ=1: Example of score changes for the slider changing from 0 to 1. First term is blue, the second is red, and the product is purple. 
 
 ![Quad_adjustment](images/quad_adj.png)
-Figure X: Examples of four videos with S=0.4 or S=0.8, and t=4 or t=2000  for the slider changing from 0 to 1. 
+
+Figure 2: Examples of four videos with S=0.4 or S=0.8, and t=4 or t=2000  for the slider changing from 0 to 1. 
 
 ![Range_of_function](images/possible_range.png)
-Figure X: Possible range of values reachable by the function.
+
+Figure 3: Possible range of values reachable by the function.
 
 These sliders allow the users to customise the feed to whatever preferred 
 
 ![Output1](images/output1.png)
-Figure X: Proportion of subbed videos is 0.5, time slider is 0.02, subbed time slider is 0.9. This gives unsubbed videos little dependence on time posted and subbed videos little dependence on score.
+
+Figure 4: Proportion of subbed videos is 0.5, time slider is 0.02, subbed time slider is 0.9. This gives unsubbed videos little dependence on time posted and subbed videos little dependence on score.
 
 ![Output2](images/output2.png)
-Figure X: Recovery of subscription feed by setting proportion of subbed videos to 1 and subbed time slider to 1. This gives only subbed videos chronologically.
+
+Figure 5: Recovery of subscription feed by setting proportion of subbed videos to 1 and subbed time slider to 1. This gives only subbed videos chronologically.
 
 ![Output3](images/output3.png)
-Figure X: Recovery of recommended feed by setting proportion of subbed videos to 0 and time slider to 0. This gives only un-subbed videos according to their similarity score.
+
+Figure 6: Recovery of recommended feed by setting proportion of subbed videos to 0 and time slider to 0. This gives only un-subbed videos according to their similarity score.
 
 Problems with Proposed Solution and possible solutions
 The log scale for time might be too sensitive for small values of time while being too insensitive for larger values of time. Another function could be used to map time to a domain in [0,1]. A maximum value of time could cap all times to do this, i.e. another above 10 years old, just consider it 10 years old for the purposes of recommendation.
 
 The slider also does not make intuitive sense to most people; what does a 0.2 on the scale mean? What about 0.5? The slider would have to be tweaked to feel more natural, and simplifications to the formula could be made to make explanation of the slider more natural.
 
-The function does not map to every value from zero to 1 for every slider value. If the slider is at 0.5, the minimum adjusted score is 0.25. The function could have T(1-T) subtracted and then have the result divided by (1+T(T-1)). This gives the result in Figure X. The function could also be changed to linearly interpolate between the score and time value, which could also increase the clarity of the slider.
+The function does not map to every value from zero to 1 for every slider value. If the slider is at 0.5, the minimum adjusted score is 0.25. The function could have Slider(1-Slider) subtracted and then have the result divided by (1+Slider(Slider-1)). This gives the result in Figure 7. The function could also be changed to linearly interpolate between the score and time value, which could also increase the clarity of the slider.
 
 ![Range_adjustment](images/range_adj.png)
-Figure X: Comparison between base function and function adjusted to have scores between 0 and 1.
+
+Figure 7: Comparison between base function and function adjusted to have scores between 0 and 1.
 
 Finally there is the issue of if users feel this gives them more agency. I feel like I have more options by doing this as it is exactly what I feel is missing in Youtube’s system. There would need to be test group to test if this does increase agency, but that is beyond the scope of this project.
 
