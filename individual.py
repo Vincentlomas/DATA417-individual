@@ -97,4 +97,4 @@ while user_input != "q":
             print(f"                  {general_matrix[j,2]:9.2f}                      {general_matrix[j,1]:5.5f}")
             j+=1
     
-    user_input = input("Enter 'q' to quit, or anything else to generate 10 more suggestions ")
+    user_input = input("Enter 'q' to quit, or anything else to generate 10 more suggestions: ")
