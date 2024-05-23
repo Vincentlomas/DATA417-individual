@@ -79,17 +79,28 @@ Validation:
 Training data can be split up into data to train, data to test model fit, and validation data
 User interactions with recommended posts is another form of validation
 
-### Prototype design of AI
+## Prototype design of AI
+### How to use code
+
+Near the top of the document there are 3 sliders,  prop_subbed, time_slider, and sub_time_slider. prop_subbed changes the proportion of subbscribed videos, time_slider changes the weighting of time compared to the recommender system score for unsubscribed videos, and sub_time_slider does the same as time_slider, but for subscribed videos.
+
+When the code is run, a false dataset of videos is generated. 5 random "categories" for each video get a value between 0 and 1 (the user gets one in each category too); then a cosine similarity between the user's score in these categories and the videos is preformed to generate a score for the video. In reality this score would use the site's recommendation algorithm to rank the videos. This score is then adjusted by the equation described below. The system then randomly pick either a subscribed or unsubscribed video (by using prop_subbed) and takes the video with the highest adjusted score and recommends it.
+
+The system recommends 10 videos, then waits for input, if "q" it quits, if anything else, it recommends 10 more videos.
+
+### Theory
 The prototype of this design modifies the recommender system score by applying the following equation:
 
 S_adj=(Slider+(1-Slider)S)*(1-Slider+Slider/(log(offset+t)/log(10)+ζ))
 Where 0≤Slider≤1 is the slider the user interacts with, S is the recommender system score before the sliders act, S_adj is the adjusted score, t is the time since posted, offset is an offset to the time, and ζ is a “damping” term for the equation.
 
 
-The first term in this equation (Slider+(1-Slider)S) linearly interpolates between the recommender system’s score and 1. If Slider=1, this first term is 1 and if Slider=0 this first term is S.
+The first term in this equation (Slider+(1-Slider)S) linearly interpolates between the recommender system’s score and 1. If Slider=1, this first term is 1 and if Slider=0 this first term is S. The second term (1-Slider+Slider/(log(offset+t)/log(10)+ζ)) linearly interpolates between 1 and the score based off of time posted. These are then multiplied, seen in Figure 1.
 
 
 offset  is important as if a video was just posted t=0 would be undefined, and if 0<t1, log would blow up to a very large negative number. ζ is important as if log(offset+t) is close to zero, Slider/(log(offset+t)/log(10)) would blow up to infinity, meaning the actual score would be meaningless for just posted videos.
+
+4 videos scores with different values of the slider can be seen in Figure 2. This shows how the slider affect video ranking. Figure 3 shows the possible scores for the equation.
 
 ![Single_adjustment](images/single_adj.png)
 
@@ -103,7 +114,7 @@ Figure 2: Examples of four videos with S=0.4 or S=0.8, and t=4 or t=2000  for th
 
 Figure 3: Possible range of values reachable by the function.
 
-These sliders allow the users to customise the feed to whatever preferred 
+These sliders allow the users to customise the feed to whatever preferred. Some example of output are shown in Figures 4, 5, and 6. Figure 4 shows a mix of slider values, while Figure 5 and Figure 6 show recovery of the subscription feed and homepage, respectively. This Allows these two seperate pages to be merged into 1 while increasing agency of the user.
 
 ![Output1](images/output1.png)
 
@@ -117,7 +128,8 @@ Figure 5: Recovery of subscription feed by setting proportion of subbed videos t
 
 Figure 6: Recovery of recommended feed by setting proportion of subbed videos to 0 and time slider to 0. This gives only un-subbed videos according to their similarity score.
 
-Problems with Proposed Solution and possible solutions
+### Problems with Proposed Solution and possible solutions
+
 The log scale for time might be too sensitive for small values of time while being too insensitive for larger values of time. Another function could be used to map time to a domain in [0,1]. A maximum value of time could cap all times to do this, i.e. another above 10 years old, just consider it 10 years old for the purposes of recommendation.
 
 The slider also does not make intuitive sense to most people; what does a 0.2 on the scale mean? What about 0.5? The slider would have to be tweaked to feel more natural, and simplifications to the formula could be made to make explanation of the slider more natural.
